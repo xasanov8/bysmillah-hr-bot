@@ -1,0 +1,193 @@
+BYSMILLAH HR BOT — QO'LLANMA
+Telegram: @bysmillah_hr_bot
+================================================================================
+
+
+BU NIMA?
+
+Bysmillah jamoasiga ishga kirmoqchi bo'lgan odamlardan ariza yig'adigan va
+ularni boshqaradigan tizim. Ikki qismdan iborat:
+
+  1) Nomzod uchun  — Telegram ichida ochiladigan ariza formasi
+  2) HR uchun      — arizalarni ko'rish, qidirish va xodimlarni boshqarish bo'limi
+
+Hech qanday dastur o'rnatish shart emas — hammasi Telegram ichida ishlaydi.
+
+
+================================================================================
+1-QISM. NOMZOD TOMONI (ariza topshirish)
+================================================================================
+
+QANDAY BOSHLANADI
+  Odam @bysmillah_hr_bot ga kiradi, /start bosadi va tilni tanlaydi
+  (o'zbekcha yoki inglizcha). So'ng "Ariza formasini ochish" tugmasini bosadi.
+
+FORMA ICHIDA NIMA BOR
+  Forma 6 bosqichga bo'lingan, tepasida qaysi bosqichda ekani ko'rinib turadi:
+
+    1. Shaxsiy ma'lumotlar — ism, yosh, shahar, telefon, email, Telegram nik
+    2. Siz haqingizda      — 5 ta savol (qayerda ishlaysiz, nega bizga, qaysi soha...)
+    3. Ish uslubingiz      — 5 ta savol (tashabbus, feedback, motivatsiya...)
+    4. Rivojlanish         — 6 ta savol (AI vositalari, dasturlar, video...)
+    5. Rezyume             — PDF yoki Word fayl yuklash (majburiy)
+    6. Tekshirish          — yuborishdan oldin hamma javobni ko'rib chiqish
+
+  Jami 16 ta savol + 5 ta shaxsiy maydon. To'ldirish ~10 daqiqa.
+
+AVTOMATIK TEKSHIRUVLAR
+  - Bo'sh qoldirilgan majburiy savol o'tkazmaydi
+  - Email va telefon formati tekshiriladi
+  - Telegram nik yozilayotganda darhol tekshiriladi: bu nik bilan allaqachon
+    ariza topshirilgan bo'lsa, ogohlantiradi (bir odam ikki marta topshirmaydi)
+
+ARIZA YUBORILGANDAN KEYIN
+  - Nomzodga tasdiq xabari keladi (ariza raqami bilan)
+  - HR guruhiga nomzod kartasi tushadi: qisqa ma'lumot, rezyume fayli va
+    barcha savollarga berilgan javoblar
+
+QAYTA OCHGANDA NIMA BO'LADI
+  Bot odamni chat ID si bo'yicha taniydi:
+
+    - Ariza topshirmagan bo'lsa      → bo'sh forma
+    - Ariza topshirgan bo'lsa        → javoblari to'ldirilgan holda chiqadi,
+                                        o'zgartirib qayta yuborsa bo'ladi
+                                        (rezyumeni qayta yuklash shart emas)
+    - Ishga olingan bo'lsa           → to'g'ridan-to'g'ri login sahifasiga o'tadi
+
+  Qayta yuborilganda yangi ariza ochilmaydi — eskisi yangilanadi va guruhga
+  qayta tushadi.
+
+
+================================================================================
+2-QISM. HR TOMONI (ishchilar bo'limi)
+================================================================================
+
+QANDAY KIRILADI
+  Ariza formasining tepasidagi "Staff" havolasi orqali, yoki to'g'ridan-to'g'ri
+  manzilga /staff.html qo'shib. Login va parol so'raydi.
+
+HISOB TURLARI
+
+  ADMIN
+    Hamma narsani ko'radi va boshqaradi. Mutaxassis va ishchi hisoblarini
+    ochadi. Bitta admin bo'ladi.
+
+  MUTAXASSIS (Specialist)
+    Bir yoki bir nechta sohaga biriktiriladi (masalan Dasturlash, Marketing).
+    FAQAT o'sha sohadagi nomzodlarni ko'radi. O'ziga ishchi qo'sha oladi.
+    O'z sohasi bo'yicha to'liq huquqqa ega: nomzodlar ro'yxati, aloqa
+    ma'lumotlari, rezyume yuklab olish.
+
+  ISHCHI (Worker)
+    Mutaxassisga biriktiriladi va uning sohasini meros oladi.
+    Nomzod ma'lumotlariga ruxsati YO'Q — faqat o'z profilini ko'radi.
+
+  Ruxsatlar alohida sozlanmaydi, hisob turidan kelib chiqadi.
+
+PASTDAGI BO'LIMLAR
+
+  APPLICANTS (Nomzodlar)
+    Barcha arizalar kartalar ko'rinishida. Har birida ism, yosh, shahar,
+    soha teglari, holat va rezyume belgisi.
+
+    Qidiruv: ism, Telegram nik, soha, shahar yoki ariza raqami bo'yicha
+    Filtr: yo'nalish bo'yicha
+
+    Kartani bosganda to'liq ma'lumot ochiladi: aloqa (bosiladigan telefon,
+    email, Telegram), rezyumeni yuklab olish tugmasi va barcha savol-javoblar.
+
+    MUHIM: ishga olingan odamlar bu ro'yxatda ko'rinmaydi. Ajratish Telegram
+    nik orqali — nomzodning niki biror xodim hisobiga biriktirilgan bo'lsa,
+    u avtomatik chiqib ketadi.
+
+  SPECIALISTS (faqat admin)
+    Mutaxassis hisoblari ro'yxati. Qidiruv: login, Telegram nik yoki soha.
+
+  WORKERS
+    Admin uchun — barcha ishchi hisoblari.
+    Mutaxassis uchun — faqat o'zi ochgan ishchilar ("My workers").
+
+  NEW (yangi hisob ochish)
+    Login, parol va Telegram nik kiritiladi. So'ng tanlanadi:
+
+      Specialist → qaysi soha(lar)ga biriktirilishi belgilanadi
+      Worker     → qaysi mutaxassisga biriktirilishi tanlanadi
+                   (sohani o'sha mutaxassisdan meros oladi)
+
+    Hisob ochilgach login va parol alohida panelda ko'rsatiladi — xodimga
+    uzatish uchun.
+
+  PROFILE
+    O'z ma'lumotlari:
+      - Profil rasmi (bosib yuklanadi, JPG/PNG/WebP, 4 MB gacha)
+      - Login (ko'rinadi)
+      - Parol (nuqtalar bilan yashirilgan, ko'zcha tugmasi bilan ochiladi,
+        qalam bilan o'zgartiriladi)
+      - Telegram nik (o'zgartiriladi)
+      - Roli, sohasi va ruxsatlari (faqat ko'rish uchun)
+      - O'zi topshirgan ariza — hamma javoblari, har birini qalam orqali
+        o'zgartirsa bo'ladi
+      - O'zi ochgan ishchilar ro'yxati
+
+HISOB SAHIFASI (birovning kartasini bosganda)
+  Admin yoki mutaxassis boshqa hisobni ochganda ko'radi:
+    - Login va parol (o'zgartirsa bo'ladi)
+    - Telegram nik, roli, sohasi, kim ochgan, oxirgi kirish sanasi
+    - U login-parol bergan ishchilar ro'yxati (bosib ichiga kirsa bo'ladi)
+    - O'sha odam ilgari ariza topshirgan bo'lsa — barcha savol-javoblari
+
+
+================================================================================
+3-QISM. TELEGRAM GURUHI
+================================================================================
+
+Har bir yangi ariza HR guruhiga tushadi. Karta ostida to'rtta tugma:
+
+  SHORTLIST        — ichki belgi, nomzodga xabar ketmaydi
+  SUHBATGA TAKLIF  — nomzodga suhbat taklifi yuboriladi
+  QABUL QILISH     — nomzodga qabul qilingani haqida xabar
+  RAD JAVOBI       — xushmuomala rad javobi
+
+Oxirgi uchtasi bosilganda avval tasdiq so'raydi. Xabarlar nomzod tanlagan
+tilda ketadi va professional uslubda yozilgan (rad javobida "rad etildi"
+degan so'z ishlatilmaydi — o'rinlar to'lganini va bazada saqlab qolinishini
+aytadi).
+
+Admin buyruqlari (botga shaxsiy yoziladi):
+  /stats          — nechta ariza, holat va soha kesimida
+  /export         — butun bazani Excel (CSV) fayl qilib yuboradi
+  /sozlash        — sozlamalarni ko'rsatadi
+  /yuborilmagan   — guruhga tushmay qolgan arizalarni qayta yuboradi
+
+
+================================================================================
+4-QISM. QO'SHIMCHA
+================================================================================
+
+JONLI YANGILANISH
+  Ochiq turgan ekran har 12 soniyada o'zi yangilanadi. Yangi ariza kelsa
+  ro'yxatga qo'shiladi, o'chirilgani yo'qoladi. Yozayotgan paytingizda
+  yangilanish kutib turadi, ilova fonda bo'lsa umuman so'rov yubormaydi.
+
+TILLAR
+  Nomzod formasi o'zbek va ingliz tillarida. Tepadagi EN / UZ tugmalari
+  orqali almashtiriladi. HR bo'limi ingliz tilida.
+
+MA'LUMOT QAYERDA SAQLANADI
+  data/candidates.json  — arizalar
+  data/staff.json       — xodim hisoblari
+  data/cv/              — rezyume fayllari
+  data/avatars/         — profil rasmlari
+
+  Bularni vaqti-vaqti bilan nusxalab qo'yish tavsiya etiladi.
+
+XAVFSIZLIK
+  - Parollar hashlanadi (PBKDF2), ochiq matnda saqlanmaydi
+  - Kirish kaliti 12 soatda eskiradi, parol almashsa darhol bekor bo'ladi
+  - 5 marta xato parol → 5 daqiqaga blok
+  - Ruxsat cheklovi serverda ishlaydi: begona sohadagi nomzodni to'g'ridan-
+    to'g'ri havola bilan ham ocholmaydi
+
+
+================================================================================
+Savol bo'lsa: @bysmillah_hr_bot

@@ -1,0 +1,17 @@
+{
+  "name": "bysmillah-hr-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Bysmillah HR bot — Cloudflare Worker (ariza formasi, ishchilar bo'limi, Telegram webhook)",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:init": "wrangler d1 execute bysmillah-hr --remote --file=./schema.sql",
+    "db:init:local": "wrangler d1 execute bysmillah-hr --local --file=./schema.sql",
+    "migrate": "node migrate.js"
+  },
+  "devDependencies": {
+    "wrangler": "^3.114.0"
+  }
+}

@@ -1,0 +1,1281 @@
+/* Ishchilar bo'limi — styles.css dagi palitra va o'zgaruvchilar ustiga quriladi.
+   Sarlavhalar uchun Fraunces (serif), raqamlar uchun JetBrains Mono. */
+
+.staff-body {
+  padding-bottom: calc(78px + env(safe-area-inset-bottom));
+}
+
+/* ------------------------------ pastki bo'limlar ----------------------------- */
+
+.tabbar {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 30;
+  display: flex;
+  justify-content: space-around;
+  gap: 2px;
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--hairline-soft);
+}
+
+.tabbar__item {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 7px 4px 6px;
+  font-family: inherit;
+  color: var(--text-soft);
+  background: none;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease, transform 0.12s ease;
+}
+
+.tabbar__item:active {
+  transform: scale(0.94);
+}
+
+.tabbar__item[aria-current='true'] {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.tabbar__label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Tor ekranlarda beshta yorliq ham to'liq sig'sin */
+@media (max-width: 379px) {
+  .tabbar {
+    gap: 0;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .tabbar__item {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .tabbar__label {
+    font-size: 9.5px;
+    letter-spacing: 0;
+  }
+}
+
+/* -------------------------------- mutaxassis -------------------------------- */
+
+.section-note {
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+
+.spec__who {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.spec__avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* Hisob turiga qarab kartaning chap chekkasi rangi o'zgaradi —
+   ro'yxat bir xil bo'lib ko'rinmaydi */
+/* Nomzod kartasi holatiga qarab chekka rangini oladi */
+.card--applicant {
+  border-left: 3px solid var(--hairline);
+}
+
+.card--applicant.is-new {
+  border-left-color: var(--accent);
+}
+
+.card--applicant.is-shortlist {
+  border-left-color: #c98a12;
+}
+
+.card--applicant.is-interview {
+  border-left-color: #2f6fd0;
+}
+
+.card--applicant.is-accepted {
+  border-left-color: var(--accent);
+  background: linear-gradient(90deg, var(--accent-soft), var(--surface) 42%);
+}
+
+.card--applicant.is-declined {
+  border-left-color: var(--danger);
+  opacity: 0.75;
+}
+
+.card--specialist {
+  border-left: 3px solid var(--accent);
+}
+
+.card--specialist .spec__avatar {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.card--worker {
+  border-left: 3px solid var(--hairline);
+}
+
+.card--worker .spec__avatar {
+  background: var(--surface-2);
+  color: var(--text-soft);
+}
+
+.spec__names {
+  min-width: 0;
+}
+
+.spec__tg {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: var(--text-soft);
+  overflow-wrap: anywhere;
+}
+
+.spec__count {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 9px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.tag--wide {
+  font-style: italic;
+}
+
+.group-title {
+  margin: 22px 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.group-title:first-of-type {
+  margin-top: 4px;
+}
+
+.kind-picker {
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline-soft);
+}
+
+.notice-inline {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.panel--accent {
+  border-color: var(--accent);
+}
+
+.panel--accent .row__value {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  color: var(--accent);
+}
+
+.staff-body .mono,
+.mono {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.92em;
+  letter-spacing: -0.01em;
+}
+
+.icon {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------- kirish --------------------------------- */
+
+.auth {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 76px 24px 48px;
+}
+
+.auth__eyebrow {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+.auth__title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  margin: 0 0 10px;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.auth__note {
+  margin: 0 0 32px;
+  color: var(--text-soft);
+  font-size: 14.5px;
+  max-width: 34ch;
+}
+
+.auth__form {
+  display: grid;
+  gap: 18px;
+}
+
+.auth__error {
+  margin: 0;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.auth__back {
+  display: inline-block;
+  margin-top: 28px;
+  color: var(--text-soft);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 2px;
+}
+
+.auth__back:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.input-group {
+  display: grid;
+  gap: 8px;
+}
+
+.input-group__label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.input-group input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  padding: 13px 15px;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.input-group input:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* --------------------------------- sarlavha -------------------------------- */
+
+.admin-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: 22px 20px 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.admin-header__top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-header__titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-header__eyebrow {
+  margin: 0 0 3px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+
+/* Sarlavha ostida yupqa rangli chiziq — bo'limlar bir xil ko'rinmasin */
+.admin-header::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent 55%);
+  opacity: 0.55;
+}
+
+.admin-header {
+  position: sticky;
+}
+
+.admin-header__title {
+  font-family: 'Fraunces', Georgia, serif;
+  margin: 0;
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  overflow-wrap: break-word;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.account__name {
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  color: var(--text-soft);
+  background: transparent;
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+}
+
+.icon-btn:hover {
+  color: var(--text);
+  border-color: var(--text-soft);
+}
+
+.icon-btn:active {
+  transform: scale(0.94);
+}
+
+.tabs {
+  display: flex;
+  gap: 22px;
+  margin-top: 16px;
+}
+
+.tabs__item {
+  position: relative;
+  padding: 0 0 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-soft);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+
+.tabs__item[aria-selected='true'] {
+  color: var(--text);
+}
+
+.tabs__item[aria-selected='true']::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* ---------------------------------- asosiy --------------------------------- */
+
+.admin-main {
+  padding: 20px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.admin-main .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex: 0 1 auto;
+  min-width: 0;
+  padding: 11px 16px;
+  font-size: 14px;
+}
+
+.btn--soft {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--hairline-soft);
+  text-decoration: none;
+}
+
+.btn--danger {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+  border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent);
+}
+
+/* --------------------------------- filtrlar -------------------------------- */
+
+.filters {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  color: var(--text-soft);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.search:focus-within {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  padding: 13px 0;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  background: none;
+  border: 0;
+  outline: none;
+}
+
+.search input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.chip-row {
+  display: grid;
+  gap: 7px;
+}
+
+.chip-row__label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.chip-row__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter-chip {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-soft);
+  background: transparent;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 7px 13px;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease, transform 0.12s ease;
+}
+
+.filter-chip:hover {
+  color: var(--text);
+}
+
+.filter-chip:active {
+  transform: scale(0.96);
+}
+
+.filter-chip[aria-pressed='true'] {
+  color: var(--accent-text);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.result-count {
+  margin: 0 0 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+.result-count strong {
+  color: var(--text);
+  margin-right: 4px;
+}
+
+/* --------------------------------- kartalar -------------------------------- */
+
+.card-list {
+  display: grid;
+  gap: 10px;
+}
+
+.card {
+  padding: 16px 17px;
+  background: var(--surface);
+  border: 1px solid var(--hairline-soft);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: border-color 0.18s ease, transform 0.14s ease;
+}
+
+.card:hover {
+  border-color: var(--accent);
+}
+
+.card:active {
+  transform: scale(0.995);
+}
+
+.card--member {
+  cursor: default;
+}
+
+.card--member:hover {
+  border-color: var(--hairline);
+}
+
+.card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card__name {
+  margin: 0;
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.card__meta {
+  margin: 5px 0 0;
+  font-size: 13.5px;
+  color: var(--text-soft);
+}
+
+.card__tg {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.card__field {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--text);
+  padding: 7px 10px;
+  background: var(--surface-2);
+  border-radius: 8px;
+}
+
+.card__note {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.card__foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 13px;
+  padding-top: 11px;
+  border-top: 1px solid var(--hairline-soft);
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+.card__cv {
+  margin-left: auto;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 5px;
+  padding: 2px 6px;
+}
+
+.card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline-soft);
+}
+
+.card__actions .btn {
+  padding: 10px 13px;
+  font-size: 13.5px;
+}
+
+.pill {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-soft);
+}
+
+.pill.is-new {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.pill.is-shortlist {
+  background: color-mix(in srgb, #c98a12 16%, transparent);
+  color: #b3790c;
+}
+
+.pill.is-interview {
+  background: color-mix(in srgb, #2f6fd0 15%, transparent);
+  color: #2f6fd0;
+}
+
+.pill.is-accepted {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.pill.is-declined {
+  background: color-mix(in srgb, var(--danger) 13%, transparent);
+  color: var(--danger);
+}
+
+:root[data-theme='dark'] .pill.is-shortlist {
+  color: #e0ab4a;
+}
+
+:root[data-theme='dark'] .pill.is-interview {
+  color: #7fadf0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 11px;
+}
+
+.tag {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-soft);
+  background: var(--surface-2);
+  border-radius: 6px;
+  padding: 3px 8px;
+}
+
+/* ---------------------------------- bo'sh ---------------------------------- */
+
+.empty {
+  padding: 56px 20px;
+  text-align: center;
+  border: 1px dashed var(--hairline);
+  border-radius: 16px;
+}
+
+.empty__title {
+  font-family: 'Fraunces', Georgia, serif;
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.empty__text {
+  margin: 0 auto;
+  max-width: 32ch;
+  font-size: 14px;
+  color: var(--text-soft);
+}
+
+/* --------------------------------- tafsilot -------------------------------- */
+
+.detail-head {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--hairline-soft);
+  margin-bottom: 20px;
+}
+
+.detail-head__name {
+  font-family: 'Fraunces', Georgia, serif;
+  margin: 12px 0 4px;
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.detail-head__meta {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 14px;
+}
+
+.detail-foot {
+  margin: 22px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+.panel {
+  padding: 17px;
+  margin-bottom: 12px;
+  background: var(--surface);
+  border: 1px solid var(--hairline-soft);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.panel__title {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+}
+
+/* Joyida tahrirlanadigan qator */
+.row--edit {
+  align-items: flex-start;
+}
+
+.row__edit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.row__pencil {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  color: var(--text-soft);
+  background: var(--surface-2);
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+.row__pencil:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.row__input {
+  flex: 1;
+  min-width: 0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  border-radius: 9px;
+  padding: 8px 10px;
+  outline: none;
+}
+
+.row__save {
+  flex-shrink: 0;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--accent-text);
+  background: var(--accent);
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.answer__editor {
+  margin-top: 10px;
+}
+
+.answer__input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  border-radius: 11px;
+  padding: 11px 13px;
+  outline: none;
+  resize: vertical;
+}
+
+textarea.answer__input {
+  min-height: 110px;
+}
+
+.answer__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.answer__head .row__pencil {
+  margin-left: auto;
+}
+
+.answer-group {
+  margin: 20px 0 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.row + .row {
+  border-top: 1px solid var(--hairline-soft);
+}
+
+.row__label {
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+.row__value {
+  font-size: 14.5px;
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.row__value--link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.answer + .answer {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--hairline-soft);
+}
+
+.answer__head {
+  display: flex;
+  gap: 9px;
+  margin-bottom: 8px;
+}
+
+.answer__num {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--accent);
+}
+
+.answer__q {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.45;
+}
+
+.answer__a {
+  margin: 0 0 0 27px;
+  padding-left: 12px;
+  border-left: 2px solid var(--accent-soft);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-soft);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.answer__a--empty {
+  font-style: italic;
+  opacity: 0.6;
+}
+
+/* ---------------------------------- jamoa ---------------------------------- */
+
+.notice {
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border-left: 2px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 12px 12px 0;
+}
+
+.notice strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 3px;
+  color: var(--accent);
+}
+
+.notice p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+
+.form-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.toggle-list {
+  display: grid;
+  gap: 2px;
+}
+
+.toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 11px 0;
+  cursor: pointer;
+}
+
+.toggle + .toggle {
+  border-top: 1px solid var(--hairline-soft);
+}
+
+.toggle input {
+  appearance: none;
+  flex-shrink: 0;
+  position: relative;
+  width: 40px;
+  height: 23px;
+  margin-top: 1px;
+  background: var(--surface-2);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.toggle input::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--text-soft);
+  transition: transform 0.2s cubic-bezier(0.3, 0.8, 0.3, 1), background 0.2s ease;
+}
+
+.toggle input:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.toggle input:checked::after {
+  transform: translateX(17px);
+  background: var(--accent-text);
+}
+
+.toggle input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.toggle__body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.toggle__label {
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.toggle__hint {
+  font-size: 12.5px;
+  color: var(--text-soft);
+  line-height: 1.4;
+}
+
+.dept-picker {
+  padding-top: 14px;
+  margin-top: 4px;
+  border-top: 1px solid var(--hairline-soft);
+}
+
+.dept-picker__label {
+  margin: 0 0 3px;
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.dept-picker__hint {
+  margin: 0 0 11px;
+  font-size: 12.5px;
+  color: var(--text-soft);
+}
+
+/* ---------------------------------- profil --------------------------------- */
+
+.account__name[aria-current='true'] {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.profile-head {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-bottom: 22px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+/* Profil rasmi — bosilganda galereya ochiladi */
+.profile-photo {
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.profile-photo__img {
+  display: block;
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  object-fit: cover;
+  background: var(--surface-2);
+}
+
+.profile-photo__badge {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-text);
+  border: 2px solid var(--bg);
+  transition: transform 0.14s ease;
+}
+
+.profile-photo:hover .profile-photo__badge {
+  transform: scale(1.08);
+}
+
+.spec__avatar--img {
+  object-fit: cover;
+  padding: 0;
+}
+
+.profile-avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.profile-name {
+  font-family: 'Fraunces', Georgia, serif;
+  margin: 0;
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.profile-role {
+  margin: 3px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+.access-summary {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.panel__note {
+  margin: 14px 0 0;
+  padding-top: 13px;
+  border-top: 1px solid var(--hairline-soft);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+
+.profile-signout {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* ---------------------------------- toast ---------------------------------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translate(-50%, 20px);
+  z-index: 100;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 13.5px;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    transform: translate(-50%, 0);
+  }
+}

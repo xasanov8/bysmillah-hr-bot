@@ -1,0 +1,33 @@
+# Nusxa olib `wrangler.toml` deb saqlang va o'z qiymatlaringizni yozing.
+# ID lar `wrangler d1 create` va `wrangler kv namespace create` buyruqlaridan chiqadi.
+
+name = "bysmillah-hr"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Ariza formasi va ishchilar bo'limi — statik fayllar
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# Arizalar, xodim hisoblari va sozlamalar
+[[d1_databases]]
+binding = "DB"
+database_name = "bysmillah-hr"
+database_id = "wrangler d1 create bysmillah-hr — shu buyruq bergan id"
+
+# Rezyume fayllari va profil rasmlari
+[[kv_namespaces]]
+binding = "FILES"
+id = "wrangler kv namespace create FILES — shu buyruq bergan id"
+
+[vars]
+COMPANY_NAME = "Bysmillah"
+TZ = "Asia/Tashkent"
+PUBLIC_URL = "https://<worker-nomi>.<hisobingiz>.workers.dev"
+
+# Maxfiy qiymatlar bu faylda saqlanmaydi:
+#   wrangler secret put BOT_TOKEN
+#   wrangler secret put WEBHOOK_SECRET
+# Ixtiyoriy: HR_CONTACT, INTERVIEW_LINK

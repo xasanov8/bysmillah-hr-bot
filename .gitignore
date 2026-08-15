@@ -1,0 +1,23 @@
+# Maxfiy — hech qachon repozitoriyga tushmasin
+.dev.vars
+data-webhook-secret.txt
+.env
+*.pem
+
+# Hisobga tegishli identifikatorlar va ishlab turgan manzil
+# (namunasi wrangler.toml.example da)
+wrangler.toml
+
+# Nomzodlar ma'lumoti va parol hashlari
+migration.sql
+files.json
+data/
+backup*/
+
+# Bog'liqliklar va vaqtinchalik fayllar
+node_modules/
+.wrangler/
+dist/
+*.log
+_*.mjs
+_*.js

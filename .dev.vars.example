@@ -1,0 +1,9 @@
+# Mahalliy sinov uchun nusxa olib `.dev.vars` deb saqlang.
+# Haqiqiy qiymatlar Cloudflare'da maxfiy sifatida saqlanadi:
+#   npx wrangler secret put BOT_TOKEN
+#   npx wrangler secret put WEBHOOK_SECRET
+
+BOT_TOKEN=BotFather bergan token
+WEBHOOK_SECRET=tasodifiy uzun satr
+PUBLIC_URL=http://localhost:8787
+COMPANY_NAME=Bysmillah
