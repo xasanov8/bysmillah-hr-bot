@@ -52,31 +52,43 @@ export const candidates = {
     return results.map(candidateFrom);
   },
 
-  async nextId(db) {
-    const row = await db.prepare('SELECT COUNT(*) AS n FROM candidates').first();
-    return 'A-' + String((row?.n || 0) + 1).padStart(4, '0');
+  // Eng katta raqamdan keyingisi. COUNT(*) ishlatib bo'lmaydi: o'chirilgan
+  // arizalardan keyin u mavjud ID bilan to'qnashadi.
+  async nextId(db, offset = 0) {
+    const row = await db
+      .prepare("SELECT id FROM candidates WHERE id LIKE 'A-%' ORDER BY CAST(SUBSTR(id, 3) AS INTEGER) DESC LIMIT 1")
+      .first();
+    const last = Number(String(row?.id || '').slice(2));
+    return 'A-' + String((Number.isFinite(last) ? last : 0) + 1 + offset).padStart(4, '0');
   },
 
   async create(db, data) {
-    const id = await candidates.nextId(db);
-    await db
-      .prepare(
-        `INSERT INTO candidates (id, telegram_id, username, lang, answers, cv_name, cv_key, cv_size, status, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'yangi', ?)`
-      )
-      .bind(
-        id,
-        String(data.telegramId),
-        data.username || null,
-        data.lang || 'en',
-        JSON.stringify(data.answers || {}),
-        data.cv?.fileName || null,
-        data.cv?.key || null,
-        data.cv?.size || null,
-        nowIso()
-      )
-      .run();
-    return candidates.byId(db, id);
+    // Bir vaqtda ikki ariza kelsa ID band bo'lishi mumkin — keyingisini olamiz
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      const id = await candidates.nextId(db, attempt);
+      try {
+        await db
+          .prepare(
+            `INSERT INTO candidates (id, telegram_id, username, lang, answers, cv_name, cv_key, cv_size, status, created_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'yangi', ?)`
+          )
+          .bind(
+            id,
+            String(data.telegramId),
+            data.username || null,
+            data.lang || 'en',
+            JSON.stringify(data.answers || {}),
+            data.cv?.fileName || null,
+            data.cv?.key || null,
+            data.cv?.size || null,
+            nowIso()
+          )
+          .run();
+        return candidates.byId(db, id);
+      } catch (err) {
+        if (attempt === 4 || !/UNIQUE|PRIMARY KEY|constraint/i.test(String(err?.message || err))) throw err;
+      }
+    }
   },
 
   async update(db, id, patch) {

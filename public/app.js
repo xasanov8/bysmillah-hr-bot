@@ -658,7 +658,9 @@ async function submit() {
           return;
         }
       }
-      throw new Error(data.error || 'submit');
+      const err = new Error(data.error || 'submit');
+      err.code = data.error || 'submit';
+      throw err;
     }
 
     haptic('success');
@@ -672,7 +674,18 @@ async function submit() {
     state.busy = false;
     state.screen = 'error';
     updateChrome();
-    renderResult({ title: state.ui.errorTitle, text: state.ui.errorText, retry: true });
+
+    // Sabab noma'lum bo'lsa — tarmoq muammosi deb hisoblaymiz
+    const reason =
+      err?.code === 'auth'
+        ? state.ui.errorTextAuth
+        : err?.code === 'server'
+          ? state.ui.errorTextServer
+          : String(err?.code || '').startsWith('cv_')
+            ? state.ui.errorTextCv
+            : state.ui.errorText;
+
+    renderResult({ title: state.ui.errorTitle, text: reason || state.ui.errorText, retry: true });
     els.footer.classList.add('footer--hidden');
     tg?.MainButton?.hide();
   }
