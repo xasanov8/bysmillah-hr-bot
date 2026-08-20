@@ -15,6 +15,19 @@ const nick = (value) =>
   String(value || '').trim().replace(/^https?:\/\/t\.me\//i, '').replace(/^@+/, '').toLowerCase();
 const validNick = (value) => (/^[a-z0-9_]{4,32}$/.test(nick(value)) ? nick(value) : '');
 
+// Fayl nomida kirill/apostrof bo'lsa HTTP sarlavhasi buziladi — RFC 5987 shakli
+function contentDisposition(fileName) {
+  const name = String(fileName || 'resume');
+  const ascii = [...name]
+    .map((ch) => {
+      const code = ch.charCodeAt(0);
+      // 34 = " , 92 = teskari chiziq — sarlavhani buzadi
+      return code >= 32 && code <= 126 && code !== 34 && code !== 92 ? ch : '_';
+    })
+    .join('');
+  return `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(name)}`;
+}
+
 const CV_EXT = /\.(pdf|docx?|rtf|odt|txt)$/i;
 const CV_MAX = 15 * 1024 * 1024;
 const AVATAR_MAX = 4 * 1024 * 1024;
@@ -368,7 +381,22 @@ async function handleUpdate(env, tg, update) {
     const status = update.my_chat_member.new_chat_member?.status;
     if (chat.type === 'private' || status === 'left' || status === 'kicked') return;
 
-    if (!(await settings.admins(db)).length) await settings.addAdmin(db, update.my_chat_member.from.id);
+    const admins = await settings.admins(db);
+    const addedBy = String(update.my_chat_member.from.id);
+    const current = await settings.get(db, 'group_id');
+
+    // Arizalar guruhi allaqachon tanlangan bo'lsa, uni faqat admin almashtira oladi —
+    // aks holda botni istalgan guruhga qo'shgan odam arizalarni o'ziga burib yuborardi
+    if (current && String(current) !== String(chat.id) && !admins.includes(addedBy)) {
+      await tg.sendMessage(
+        chat.id,
+        `${company(env)} HR boti qo‘shildi.
+Arizalar guruhi allaqachon tanlangan. Bu guruhni ulash uchun admin /guruh buyrug‘ini yuborsin.`
+      );
+      return;
+    }
+
+    if (!admins.length) await settings.addAdmin(db, addedBy);
     await settings.set(db, 'group_id', chat.id);
     await tg.sendMessage(chat.id, `${company(env)} HR boti qo‘shildi.\nBu guruh arizalar guruhi qilib belgilandi.\nID: ${chat.id}`);
   }
@@ -499,6 +527,7 @@ export default {
       if (path === '/api/check-telegram' && request.method === 'POST') {
         const body = await request.json();
         const user = await verifyInitData(body.initData, env.BOT_TOKEN);
+        if (!user) return json({ ok: false, error: 'auth' }, 401);
         const target = validNick(body.telegram);
         if (!target) return json({ ok: true, valid: false, taken: false });
 
@@ -550,18 +579,27 @@ export default {
           candidate = await candidates.update(env.DB, candidate.id, {
             cv: { fileName: file.name, key, size: file.size },
           });
+          // Eski rezyume KV da qolib ketmasin
+          if (previous?.cv?.key && previous.cv.key !== key) {
+            ctx.waitUntil(env.FILES.delete(previous.cv.key).catch(() => {}));
+          }
         }
 
         await botUsers.set(env.DB, user.id, { lang });
+
+        // Guruhga yuborish xato bersa ham, nomzod tasdiq xabarini olishi kerak —
+        // shuning uchun ikkalasi alohida ishlaydi
         ctx.waitUntil(
-          (async () => {
-            await sendToGroup(env, tg, candidate, Boolean(previous));
-            await tg.sendMessage(
-              user.id,
-              s(lang, previous ? 'updated' : 'received', { name: clean.fullName, id: candidate.id })
-            );
-          })().catch((err) => console.error('apply:', err.stack || err))
+          sendToGroup(env, tg, candidate, Boolean(previous)).catch((err) =>
+            console.error('apply:guruh:', err.stack || err)
+          )
         );
+        ctx.waitUntil(
+          tg
+            .sendMessage(user.id, s(lang, previous ? 'updated' : 'received', { name: clean.fullName, id: candidate.id }))
+            .catch((err) => console.error('apply:tasdiq:', err.stack || err))
+        );
+
 
         return json({ ok: true, id: candidate.id, updated: Boolean(previous) });
       }
@@ -569,6 +607,7 @@ export default {
       /* ------------------------------ ishchilar API ------------------------------ */
       if (path === '/api/staff/login' && request.method === 'POST') {
         const { username, password } = await request.json();
+        await staff.ensureAdmin(env.DB, env.BOT_TOKEN); // bazada hisob qolmasa — 1/1 admin tiklanadi
         const result = await staff.login(env.DB, username, password, env.BOT_TOKEN);
         if (!result.ok) return json(result, 401);
         return json({ ok: true, user: result.user, token: await signToken(result.raw, env.BOT_TOKEN) });
@@ -632,6 +671,9 @@ export default {
 
           const body = await request.json();
           const merged = { ...(own.answers || {}), ...(body.answers || {}) };
+          // Telegram nik o'zgarsa xodim o'z arizasi bilan bog'lanishini yo'qotadi
+          // va yana nomzodlar ro'yxatida paydo bo'lib qoladi
+          if (own.answers?.telegram) merged.telegram = own.answers.telegram;
           const { ok, errors, clean } = validate(merged);
           if (!ok) return json({ ok: false, error: 'validation', fields: errors }, 400);
 
@@ -722,7 +764,7 @@ export default {
           return new Response(file, {
             headers: {
               'Content-Type': 'application/octet-stream',
-              'Content-Disposition': `attachment; filename="${candidate.cv.fileName || 'resume'}"`,
+              'Content-Disposition': contentDisposition(candidate.cv.fileName),
             },
           });
         }
@@ -751,9 +793,18 @@ export default {
           return Boolean(other && me.permissions.addWorkers && other.specialist === me.username);
         };
 
+        // Ro'yxatdagi har bir xodim uchun jadvalni qayta o'qimaymiz — bir marta olamiz
+        let countsCache = null;
+        const countsData = async () => {
+          if (!countsCache) {
+            const [hired, all] = await Promise.all([hiredNicks(db), candidates.all(db)]);
+            countsCache = { hired, all };
+          }
+          return countsCache;
+        };
+
         const withCounts = async (u) => {
-          const hired = await hiredNicks(db);
-          const all = await candidates.all(db);
+          const { hired, all } = await countsData();
           return {
             ...u,
             assignedCount: all.filter((c) => !isHired(c, hired) && allowedFor(u, c)).length,
@@ -858,7 +909,10 @@ export default {
           if (request.method === 'DELETE') {
             if (target.toLowerCase() === me.username) return json({ ok: false, error: 'self_delete' }, 400);
             const removed = await staff.remove(db, target);
-            return removed ? json({ ok: true }) : json({ ok: false, error: 'not_removable' }, 400);
+            if (!removed) return json({ ok: false, error: 'not_removable' }, 400);
+            // Profil rasmi KV da qolib ketmasin
+            if (removed.avatar) ctx.waitUntil(env.FILES.delete(removed.avatar).catch(() => {}));
+            return json({ ok: true });
           }
         }
 

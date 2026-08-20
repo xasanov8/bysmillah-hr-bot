@@ -297,11 +297,15 @@ export const staff = {
     return staff.get(db, to);
   },
 
+  // O'chirilgan mutaxassisning ishchilari "egasiz" qolmasligi uchun bog'lanish tozalanadi
   async remove(db, username) {
     const user = await staff.raw(db, username);
     if (!user || user.role === 'admin') return false;
-    await db.prepare('DELETE FROM staff WHERE username = ?').bind(user.username).run();
-    return true;
+    await db.batch([
+      db.prepare("UPDATE staff SET specialist = NULL WHERE specialist = ?").bind(user.username),
+      db.prepare('DELETE FROM staff WHERE username = ?').bind(user.username),
+    ]);
+    return { removed: true, avatar: user.avatar || null };
   },
 
   async password(db, username, botToken) {

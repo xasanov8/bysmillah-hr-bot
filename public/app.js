@@ -384,6 +384,7 @@ async function checkTelegram(wrap, value) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ initData: tg?.initData || '', telegram: nick }),
     });
+    if (!res.ok) return; // tekshirib bo'lmadi — nikni noto'g'ri deb belgilamaymiz
     const data = await res.json();
 
     if (!data.valid) return showFieldError(wrap, state.ui.telegramInvalid);
